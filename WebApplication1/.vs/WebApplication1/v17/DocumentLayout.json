@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|c:\\users\\louay chayeb\\desktop\\notification-center\\webapplication1\\controllers\\templatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|solutionrelative:controllers\\templatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|c:\\users\\louay chayeb\\desktop\\notification-center\\webapplication1\\controllers\\templatecreatemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|solutionrelative:controllers\\templatecreatemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|c:\\users\\louay chayeb\\desktop\\notification-center\\webapplication1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|c:\\users\\louay chayeb\\desktop\\notification-center\\webapplication1\\entities\\template.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91C4EBFB-BBA9-4AA7-8DB3-273B376A3D23}|WebApplication1.csproj|solutionrelative:entities\\template.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TemplateCreateModel.cs",
+              "DocumentMoniker": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Controllers\\TemplateCreateModel.cs",
+              "RelativeDocumentMoniker": "Controllers\\TemplateCreateModel.cs",
+              "ToolTip": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Controllers\\TemplateCreateModel.cs",
+              "RelativeToolTip": "Controllers\\TemplateCreateModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T13:55:51.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAkAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T11:29:42.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Template.cs",
+              "DocumentMoniker": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Entities\\Template.cs",
+              "RelativeDocumentMoniker": "Entities\\Template.cs",
+              "ToolTip": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Entities\\Template.cs",
+              "RelativeToolTip": "Entities\\Template.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T11:15:30.645Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TemplateController.cs",
+              "DocumentMoniker": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Controllers\\TemplateController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TemplateController.cs",
+              "ToolTip": "C:\\Users\\louay chayeb\\Desktop\\Notification-center\\WebApplication1\\Controllers\\TemplateController.cs",
+              "RelativeToolTip": "Controllers\\TemplateController.cs",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAAwBYAAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-12T11:11:38.079Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

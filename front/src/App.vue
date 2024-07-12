@@ -1,9 +1,8 @@
 <template>
-  <div>
-    NEOLEDGE
-  </div>
+  
   <div id="app">
     <Ckeditor />
+    
   </div>
 </template>
 

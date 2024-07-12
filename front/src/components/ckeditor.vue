@@ -4,13 +4,11 @@
 			<div class="editor-container editor-container_classic-editor" ref="editorContainerElement">
 				<div class="editor-container__editor">
 					<div ref="editorElement">
-						<ckeditor v-if="isLayoutReady" v-model="config.initialData" :editor="editor" :config="config" />
-                        <button id="save" @click="handleSave">Save</button>
+						<ckeditor v-if="isLayoutReady" v-model="editorData" :editor="editor" :config="config" />
 					</div>
 				</div>
+				<button id="save" @click="handleSave">Save</button>
 			</div>
-			
-		
 		</div>
 	</div>
 </template>
@@ -34,11 +32,11 @@ import {
 	ImageInline,
 	ImageInsert,
 	ImageInsertViaUrl,
-	ImageResize,
 	ImageStyle,
 	ImageTextAlternative,
 	ImageToolbar,
 	ImageUpload,
+	ImageResize,
 	Italic,
 	Link,
 	LinkImage,
@@ -46,7 +44,7 @@ import {
 	ListProperties,
 	Markdown,
 	MediaEmbed,
-	Mention,
+	PageBreak,
 	Paragraph,
 	PasteFromMarkdownExperimental,
 	PasteFromOffice,
@@ -64,20 +62,20 @@ import {
 	TextTransformation,
 	Title,
 	TodoList,
-	Undo,
-	PendingActions
+	Undo
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
+import axios from 'axios';
 
 export default {
 	name: 'app',
 	data() {
 		return {
 			isLayoutReady: false,
-			config: null,
-			editor: ClassicEditor,
-			isDirty: false
+			editorData: '',
+			config: null, // CKEditor needs the DOM tree before calculating the configuration.
+			editor: ClassicEditor
 		};
 	},
 	mounted() {
@@ -91,13 +89,13 @@ export default {
 					'showBlocks',
 					'findAndReplace',
 					'selectAll',
-					'textPartLanguage',
 					'|',
 					'heading',
 					'|',
 					'bold',
 					'italic',
 					'|',
+					'pageBreak',
 					'link',
 					'insertImage',
 					'insertImageViaUrl',
@@ -130,11 +128,11 @@ export default {
 				ImageInline,
 				ImageInsert,
 				ImageInsertViaUrl,
-				ImageResize,
 				ImageStyle,
 				ImageTextAlternative,
 				ImageToolbar,
 				ImageUpload,
+				ImageResize,
 				Italic,
 				Link,
 				LinkImage,
@@ -142,7 +140,7 @@ export default {
 				ListProperties,
 				Markdown,
 				MediaEmbed,
-				Mention,
+				PageBreak,
 				Paragraph,
 				PasteFromMarkdownExperimental,
 				PasteFromOffice,
@@ -160,8 +158,7 @@ export default {
 				TextTransformation,
 				Title,
 				TodoList,
-				Undo,
-				PendingActions
+				Undo
 			],
 			heading: {
 				options: [
@@ -219,16 +216,7 @@ export default {
 				]
 			},
 			image: {
-				toolbar: [
-					'toggleImageCaption',
-					'imageTextAlternative',
-					'|',
-					'imageStyle:inline',
-					'imageStyle:wrapText',
-					'imageStyle:breakText',
-					'|',
-					'resizeImage'
-				]
+				toolbar: ['toggleImageCaption', 'imageTextAlternative', '|', 'imageStyle:inline', 'imageStyle:wrapText', 'imageStyle:breakText']
 			},
 			link: {
 				addTargetToExternalLinks: true,
@@ -250,92 +238,37 @@ export default {
 					reversed: true
 				}
 			},
-			mention: {
-				feeds: [
-					{
-						marker: '@',
-						feed: [
-							/* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
-						]
-					}
-				]
-			},
 			menuBar: {
 				isVisible: true
 			},
+			placeholder: 'Type or paste your content here!',
 			table: {
 				contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
 			}
 		};
 
 		this.isLayoutReady = true;
-
-		this.$nextTick(() => {
-			const editor = this.$refs.editorElement.editorInstance;
-
-			editor.model.document.on('change:data', () => {
-				this.isDirty = true;
-				this.updateStatus(editor);
-			});
-
-			editor.plugins.get('PendingActions').on('change:hasAny', () => this.updateStatus(editor));
-
-			window.addEventListener('beforeunload', (evt) => {
-				if (editor.plugins.get('PendingActions').hasAny) {
-					evt.preventDefault();
-				}
-			});
-		});
 	},
+	
 	methods: {
-		async handleSave(evt) {
-			const editor = this.$refs.editorElement.editorInstance;
-			const data = editor.getData();
-			const pendingActions = editor.plugins.get('PendingActions');
-			const action = pendingActions.add('Saving changes');
-
-			evt.preventDefault();
-
-			try {
-				const response = await fetch('/your-server-endpoint', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({ content: data })
-				});
-
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-
-				pendingActions.remove(action);
-
-				if (data === editor.getData()) {
-					this.isDirty = false;
-				}
-
-				this.updateStatus(editor);
-			} catch (error) {
-				console.error('There was a problem with the save operation:', error);
-				pendingActions.remove(action);
-			}
-		},
-		updateStatus(editor) {
-			const saveButton = document.querySelector('#save');
-
-			if (this.isDirty) {
-				saveButton.classList.add('active');
-			} else {
-				saveButton.classList.remove('active');
-			}
-
-			if (editor.plugins.get('PendingActions').hasAny) {
-				saveButton.classList.add('saving');
-			} else {
-				saveButton.classList.remove('saving');
-			}
+		
+		handleSave() {
+			const data = this.editorData;
+			// Save data to a server, localStorage, or any other necessary location
+			console.log('Saved content:', data);
+				// Example: Send a POST request to save the data (you need to configure axios or another HTTP library)
+			 axios.post('https:localhost:7160/Template/Create', { input: data })
+			 	.then(response => {
+			 		console.log('Data saved successfully:', response);
+			 	})
+			 	.catch(error => {
+			 		console.error('Error saving data:', error);
+			 	});
+		
+			// You can implement your save logic here
 		}
 	}
 };
 </script>
+
+
