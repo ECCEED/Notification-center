@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Controllers",
+    "\\Entities"
   ],
-  "SelectedNode": "\\WebApplication1.csproj",
+  "SelectedNode": "\\WebApplication1.sln",
   "PreviewInSolutionExplorer": false
 }
