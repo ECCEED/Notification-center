@@ -3,20 +3,23 @@
     <nav class="navbar">
       <div class="navbar-content">
         <router-link to="/">Home</router-link>
-
         <router-link to="/show-templates">Show Templates</router-link>
       </div>
     </nav>
     <div class="template-form-container">
       <h1 class="title">Add Template</h1>
       <div class="template-form">
-        <img src="/src/assets/logo.png" alt="NeoLedge Logo" class="logo" />
+        <img
+          src="https://i.imgur.com/xQImuuX.png"
+          alt="NeoLedge Logo"
+          class="logo"
+        />
         <div class="form-group">
-          <label for="template-name">Nom du Modèle</label>
+          <label for="template-name">Template Name</label>
           <input type="text" id="template-name" v-model="templateName" />
         </div>
         <div class="form-group">
-          <label for="subject">Sujet</label>
+          <label for="subject">Subject</label>
           <input type="text" id="subject" v-model="subject" />
         </div>
         <div class="form-group">
@@ -27,7 +30,7 @@
           <label for="logo">Logo</label>
           <input type="file" id="logo" @change="onFileChange" />
         </div>
-        <button @click="save">Sauvegarder</button>
+        <button @click="save">Save</button>
       </div>
     </div>
   </div>
@@ -107,7 +110,7 @@ export default {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 800px; /* Augmenter la largeur du formulaire */
   font-family: "Arial", sans-serif;
 }
 
@@ -130,6 +133,10 @@ textarea {
   border-radius: 8px;
   font-size: 16px;
   margin-top: 8px;
+}
+
+textarea {
+  height: 150px; /* Augmenter la hauteur du textarea */
 }
 
 input[type="file"] {

@@ -30,21 +30,30 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 80px;
 }
 
 .admin-button {
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 20px 40px; /* Augmenter la taille du padding */
+  font-size: 20px; /* Augmenter la taille de la police */
   color: white;
   background-color: #0c6c8c;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 200px;
+  width: 300px; /* Augmenter la largeur du bouton */
 }
 
 .admin-button:hover {
   background-color: #0056b3;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 400; /* Définir le poids de la police à 400 */
+  margin-bottom: 20px; /* Ajustez cette valeur selon l'espacement souhaité */
+  color: #0c6c8c; /* Couleur du texte */
+  font-family: "Trebuchet MS", sans-serif; /* Définir la police à Trebuchet MS */
+  margin-top: 60px;
 }
 </style>
