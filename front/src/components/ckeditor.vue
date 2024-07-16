@@ -251,23 +251,47 @@ export default {
 	},
 	
 	methods: {
-		
-		handleSave() {
-			const data = this.editorData;
-			// Save data to a server, localStorage, or any other necessary location
-			console.log('Saved content:', data);
-				// Example: Send a POST request to save the data (you need to configure axios or another HTTP library)
-			 axios.post('https:localhost:7160/Template/Create', { input: data })
-			 	.then(response => {
-			 		console.log('Data saved successfully:', response);
-			 	})
-			 	.catch(error => {
-			 		console.error('Error saving data:', error);
-			 	});
-		
-			// You can implement your save logic here
+	handleSave() {
+		const data = this.editorData;
+		console.log('Saved content:', data);
+
+		// Check for incorrect use of single curly braces
+		if (this.containsSingleCurlyBraces(data)) {
+			alert('Your text contains single curly braces `{` or `}`. Please use double curly braces `{{variable}}` for variables.');
+			return; // Early return to prevent saving the data
 		}
+
+		// Extract variables from data
+		const variables = this.extractVariables(data);
+		console.log('Extracted variables:', variables);
+
+		axios.post('https://localhost:7160/Template/Create', { input: data })
+			.then(response => {
+				console.log('Data saved successfully:', response);
+			})
+			.catch(error => {
+				console.error('Error saving data:', error);
+			});
+	},
+	
+	extractVariables(content) {
+		const regex = /{{(.*?)}}/g;
+		let match;
+		const variables = [];
+
+		while ((match = regex.exec(content)) !== null) {
+			variables.push(match[1]);
+		}
+
+		return variables;
+	},
+
+	containsSingleCurlyBraces(content) {
+		const singleCurlyBracesRegex = /(^|[^{}]){([^{}]|$)|(^|[^{}])}([^{}]|$)/;
+		return singleCurlyBracesRegex.test(content);
 	}
+}
+
 };
 </script>
 
