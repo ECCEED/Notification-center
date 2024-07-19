@@ -22,9 +22,9 @@
           <label for="subject">Subject</label>
           <input type="text" id="subject" v-model="subject" />
         </div>
-        <div class="form-group" >
+        <div class="form-group">
           <label for="description">Description</label>
-          <CkeditorComponent v-model="description" />
+          <ckeditor v-if="isLayoutReady" v-model="description" :editor="editor" :config="config" />
         </div>
         <div class="form-group">
           <label for="logo">Logo</label>
@@ -37,19 +37,199 @@
 </template>
 
 <script>
-import CkeditorComponent from './CkeditorComponent.vue';
+import {
+  ClassicEditor,
+  AccessibilityHelp,
+  Autoformat,
+  Autosave,
+  Bold,
+  Essentials,
+  FindAndReplace,
+  FullPage,
+  GeneralHtmlSupport,
+  Heading,
+  HtmlComment,
+  HtmlEmbed,
+  ImageBlock,
+  ImageCaption,
+  ImageInline,
+  ImageInsert,
+  ImageInsertViaUrl,
+  ImageStyle,
+  ImageTextAlternative,
+  ImageToolbar,
+  ImageUpload,
+  ImageResize,
+  Italic,
+  Link,
+  LinkImage,
+  List,
+  ListProperties,
+  Markdown,
+  MediaEmbed,
+  PageBreak,
+  Paragraph,
+  PasteFromMarkdownExperimental,
+  PasteFromOffice,
+  SelectAll,
+  ShowBlocks,
+  SimpleUploadAdapter,
+  SourceEditing,
+  Table,
+  TableCaption,
+  TableCellProperties,
+  TableColumnResize,
+  TableProperties,
+  TableToolbar,
+  TextPartLanguage,
+  TextTransformation,
+  Title,
+  TodoList,
+  Undo
+} from 'ckeditor5';
+
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import 'ckeditor5/ckeditor5.css';
+import axios from 'axios';
 
 export default {
   components: {
-    CkeditorComponent
+    ckeditor: CKEditor.component
   },
   data() {
     return {
+      isLayoutReady: false,
       templateName: "",
       subject: "",
       description: "",
       logo: null,
+      config: null, // CKEditor needs the DOM tree before calculating the configuration.
+      editor: ClassicEditor
     };
+  },
+  mounted() {
+    this.config = {
+      toolbar: {
+        items: [
+          'undo',
+          'redo',
+          '|',
+          'sourceEditing',
+          'showBlocks',
+          'findAndReplace',
+          'selectAll',
+          '|',
+          'heading',
+          '|',
+          'bold',
+          'italic',
+          '|',
+          'pageBreak',
+          'link',
+          'insertImage',
+          'insertImageViaUrl',
+          'mediaEmbed',
+          'insertTable',
+          'htmlEmbed',
+          '|',
+          'bulletedList',
+          'numberedList',
+          'todoList',
+          '|',
+          'accessibilityHelp'
+        ],
+        shouldNotGroupWhenFull: false
+      },
+      plugins: [
+        AccessibilityHelp,
+        Autoformat,
+        Autosave,
+        Bold,
+        Essentials,
+        FindAndReplace,
+        FullPage,
+        GeneralHtmlSupport,
+        Heading,
+        HtmlComment,
+        HtmlEmbed,
+        ImageBlock,
+        ImageCaption,
+        ImageInline,
+        ImageInsert,
+        ImageInsertViaUrl,
+        ImageStyle,
+        ImageTextAlternative,
+        ImageToolbar,
+        ImageUpload,
+        ImageResize,
+        Italic,
+        Link,
+        LinkImage,
+        List,
+        ListProperties,
+        Markdown,
+        MediaEmbed,
+        PageBreak,
+        Paragraph,
+        PasteFromMarkdownExperimental,
+        PasteFromOffice,
+        SelectAll,
+        ShowBlocks,
+        SimpleUploadAdapter,
+        SourceEditing,
+        Table,
+        TableCaption,
+        TableCellProperties,
+        TableColumnResize,
+        TableProperties,
+        TableToolbar,
+        TextPartLanguage,
+        TextTransformation,
+        Title,
+        TodoList,
+        Undo
+      ],
+      heading: {
+        options: [
+          { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+          { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+          { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+          { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+          { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+          { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+          { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+        ]
+      },
+      htmlSupport: {
+        allow: [
+          { name: /^.*$/, styles: true, attributes: true, classes: true }
+        ]
+      },
+      image: {
+        toolbar: ['toggleImageCaption', 'imageTextAlternative', '|', 'imageStyle:inline', 'imageStyle:wrapText', 'imageStyle:breakText']
+      },
+      link: {
+        addTargetToExternalLinks: true,
+        defaultProtocol: 'https://',
+        decorators: {
+          toggleDownloadable: {
+            mode: 'manual',
+            label: 'Downloadable',
+            attributes: { download: 'file' }
+          }
+        }
+      },
+      list: {
+        properties: { styles: true, startIndex: true, reversed: true }
+      },
+      menuBar: { isVisible: true },
+      placeholder: 'Type or paste your content here!',
+      table: {
+        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+      }
+    };
+
+    this.isLayoutReady = true;
   },
   methods: {
     onFileChange(e) {
@@ -63,42 +243,71 @@ export default {
         description: this.description,
         logo: this.logo,
       });
+
+      const data = this.description;
+
+      if (this.containsSingleCurlyBraces(data)) {
+        alert('Your text contains single curly braces `{` or `}`. Please use double curly braces `{{variable}}` for variables.');
+        return;
+      }
+
+      const variables = this.extractVariables(data);
+      console.log('Extracted variables:', variables);
+
+      axios.post('https://localhost:7160/Template/Create', { input: data })
+        .then(response => {
+          console.log('Data saved successfully:', response);
+        })
+        .catch(error => {
+          console.error('Error saving data:', error);
+        });
     },
-  },
+    extractVariables(content) {
+      const regex = /{{(.*?)}}/g;
+      let match;
+      const variables = [];
+      while ((match = regex.exec(content)) !== null) {
+        variables.push(match[1]);
+      }
+      return variables;
+    },
+    containsSingleCurlyBraces(content) {
+      const singleCurlyBracesRegex = /(^|[^{}]){([^{}]|$)|(^|[^{}])}([^{}]|$)/;
+      return singleCurlyBracesRegex.test(content);
+    }
+  }
 };
 </script>
 
-
-
 <style scoped>
 .navbar {
-  background-color: #0c6c8c; /* Couleur de fond de la navbar */
-  padding: 20px; /* Ajustez le padding selon vos besoins */
-  width: 100%; /* Assurez-vous que la navbar occupe toute la largeur */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optionnel : ajoute une ombre pour un effet de profondeur */
+  background-color: #0c6c8c;
+  padding: 20px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-content {
   display: flex;
-  justify-content: flex-end; /* Aligne le contenu à droite */
+  justify-content: flex-end;
   align-items: center;
-  max-width: 1200px; /* Largeur maximale de la barre de navigation */
-  margin: 0 auto; /* Centre la barre de navigation */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .navbar-content a {
-  color: white; /* Couleur du texte des liens */
-  text-decoration: none; /* Enlève la décoration des liens */
-  padding: 10px 20px; /* Espace autour des liens */
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
 }
 
 .navbar-content a:hover {
-  background-color: #0056b3; /* Couleur de fond au survol */
-  border-radius: 4px; /* Coins arrondis au survol */
+  background-color: #0056b3;
+  border-radius: 4px;
 }
 
 .template-form-container {
-  margin-top: 60px; /* Ajoutez cette ligne pour créer un espace en haut */
+  margin-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -106,10 +315,10 @@ export default {
 
 .title {
   font-size: 32px;
-  font-weight: 400; /* Définir le poids de la police à 400 */
-  margin-bottom: 20px; /* Ajustez cette valeur selon l'espacement souhaité */
-  color: #0c6c8c; /* Couleur du texte */
-  font-family: "Trebuchet MS", sans-serif; /* Définir la police à Trebuchet MS */
+  font-weight: 400;
+  margin-bottom: 20px;
+  color: #0c6c8c;
+  font-family: "Trebuchet MS", sans-serif;
 }
 
 .template-form {
@@ -117,7 +326,7 @@ export default {
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 800px; /* Augmenter la largeur du formulaire */
+  width: 800px;
   font-family: "Arial", sans-serif;
 }
 
@@ -143,7 +352,7 @@ textarea {
 }
 
 textarea {
-  height: 150px; /* Augmenter la hauteur du textarea */
+  height: 150px;
 }
 
 input[type="file"] {

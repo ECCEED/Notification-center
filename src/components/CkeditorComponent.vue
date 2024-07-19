@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div>
 		<div class="main-container">
 			<div class="editor-container editor-container_classic-editor" ref="editorContainerElement">
@@ -301,4 +301,4 @@ export default {
 </script>
 
 
-
+ -->
