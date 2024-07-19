@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import FormTemplate from "../components/FormTemplate.vue";
 import ShowTemplates from "../views/ShowTemplates.vue";
 import HomeAdmin from "../views/HomeAdmin.vue";
+import CkeditorComponent from "../components/CkeditorComponent.vue";
 
 const routes = [
   {
@@ -18,6 +19,12 @@ const routes = [
     path: "/show-templates",
     name: "ShowTemplates",
     component: ShowTemplates,
+  },
+  {
+    path: "/Ckeditor",
+    name: "Ckeditor",
+    component: CkeditorComponent,
+
   },
 ];
 

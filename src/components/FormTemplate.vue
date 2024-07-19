@@ -22,9 +22,9 @@
           <label for="subject">Subject</label>
           <input type="text" id="subject" v-model="subject" />
         </div>
-        <div class="form-group">
+        <div class="form-group" >
           <label for="description">Description</label>
-          <textarea id="description" v-model="description"></textarea>
+          <CkeditorComponent v-model="description" />
         </div>
         <div class="form-group">
           <label for="logo">Logo</label>
@@ -37,7 +37,12 @@
 </template>
 
 <script>
+import CkeditorComponent from './CkeditorComponent.vue';
+
 export default {
+  components: {
+    CkeditorComponent
+  },
   data() {
     return {
       templateName: "",
@@ -62,6 +67,8 @@ export default {
   },
 };
 </script>
+
+
 
 <style scoped>
 .navbar {
