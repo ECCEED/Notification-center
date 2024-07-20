@@ -28,10 +28,28 @@ namespace NotificationCenterTemplateAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddTemplate(Template template)
+        public ActionResult AddTemplate([FromBody] Template template)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(e => e.Value.Errors.Count > 0)
+                    .Select(e => new
+                    {
+                        Field = e.Key,
+                        Message = string.Join(", ", e.Value.Errors.Select(err => err.ErrorMessage))
+                    })
+                    .ToList();
+
+                return BadRequest(new { Errors = errors });
+            }
             _templateService.AddTemplate(template);
+
+
+
             return CreatedAtAction(nameof(GetTemplate), new { id = template.Id }, template);
+
+
         }
 
         [HttpPut("{id}")]
@@ -60,3 +78,4 @@ namespace NotificationCenterTemplateAPI.Controllers
         }
     }
 }
+
